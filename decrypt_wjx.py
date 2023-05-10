@@ -5,7 +5,19 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
+import datetime
 
+# 获取当前系统时间
+current_time = datetime.datetime.now()
+
+# 设定过期时间为2023年6月10日00:00:00
+expiration_time = datetime.datetime(2023, 6, 10, 0, 0, 0)
+
+# 检查当前时间是否超过过期时间
+if current_time >= expiration_time:
+    # 如果超过过期时间，则自动销毁程序
+    os.remove(__file__)
+    
 def generate_aes_key(password, salt):
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
