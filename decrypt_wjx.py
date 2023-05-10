@@ -76,7 +76,46 @@ try:
 
     print(f"Decrypted data saved to {decrypted_file_path}")
 except Exception as e:
-    print(f"Error: {e}")
-    input("Press any key to exit...")
+    # 捕获异常并记录错误日志
+    with open('error.log', 'a') as f:
+        f.write(f'Error occurred: {e}\n')
+        f.write(f'Time: {datetime.datetime.now()}\n')
+    
+    # 如果解密失败，则交换第一个参数和第二个参数的值再尝试一遍
+    try:
+        key_file_path = sys.argv[2]
+        encrypted_file_path = sys.argv[1]
+
+        # 读取密钥文件内容
+        with open(key_file_path, 'rb') as f:
+            password = f.readline().rstrip(b'\n')
+            salt = f.readline().rstrip(b'\n')
+            iv = f.read()
+
+        # 读取加密文件内容
+        with open(encrypted_file_path, 'rb') as f:
+            encrypted_data = f.read()
+
+        # 生成AES密钥
+        key = generate_aes_key(password, salt)
+
+        # 解密文件内容
+        decrypted_data = aes_decrypt(key, iv, encrypted_data)
+
+        # 写入解密后的数据到新文件
+        decrypted_file_name = 'decrypted_' + os.path.splitext(os.path.basename(encrypted_file_path))[0] + '.exe'
+        decrypted_file_path = os.path.join(os.path.dirname(sys.argv[0]), decrypted_file_name)
+        with open(decrypted_file_path, 'wb') as f:
+            f.write(decrypted_data)
+
+        print(f"Decrypted data saved to {decrypted_file_path}")
+    except Exception as e:
+        # 如果两次解密都失败，则记录错误日志并退出程序
+        with open('error.log', 'a') as f:
+            f.write(f'Error occurred: {e}\n')
+            f.write(f'Time: {datetime.datetime.now()}\n')
+        
+        input("Press any key to exit...")
+        sys.exit(1)
 
 input("Press any key to exit...")
