@@ -57,7 +57,7 @@ try:
     decrypted_data = aes_decrypt(key, iv, encrypted_data)
 
     # 写入解密后的数据到新文件
-    decrypted_file_name = 'decrypted_' + os.path.splitext(os.path.basename(encrypted_file_path))[0] + '.txt'
+    decrypted_file_name = 'decrypted_' + os.path.splitext(os.path.basename(encrypted_file_path))[0] + '.exe'
     decrypted_file_path = os.path.join(os.path.dirname(sys.argv[0]), decrypted_file_name)
     with open(decrypted_file_path, 'wb') as f:
         f.write(decrypted_data)
