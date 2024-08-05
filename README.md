@@ -1,4 +1,4 @@
-# zzyc_atk
+# 简单的AES加解密且定时销毁脚本
 不妥协于形式主义
 ![PowerPlusWaterMarkObject16866076](RackMultipart20230510-1-16h03v_html_aeaba76e3ba1d21.gif)
 
